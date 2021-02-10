@@ -15,6 +15,19 @@ user_hkey = (winreg.HKEY_CURRENT_USER, r"Environment")
 @click.option("-a", "--append", is_flag=True, required=False,
               help="Appends to/Creates environment variable")
 def main(name, value, user, append):
+    """
+    Utility to set/get/modify windows environment variables via registry
+
+    Usage:
+
+        -u, --user flag is optional to all following commands
+
+        to get value: provide only variable name
+
+        to set value: provide variable name, value
+
+        to append to existing value: provide variable name, value and -a flag
+    """
     if not name:
         click.echo("No variable name is provided", err=True)
         return
