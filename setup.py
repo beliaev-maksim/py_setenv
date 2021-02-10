@@ -13,18 +13,15 @@ project_requirements = get_requirements("requirements.txt")
 
 setup(
     name="setenv",
-    version='1',
-
-    # Author details
-    author='Maksim Beliaev',
-    author_email='beliaev.m.s@gmail.com',
-
-    license='MIT',
-
-    py_modules=['setenv'],
-    install_requires=project_requirements,
-    entry_points='''
-        [console_scripts]
-        setenv=setenv:set_variable
-    ''',
+    version='0.1',
+    py_modules=['hello'],
+    install_requires=[
+        'Click',
+    ],
+    entry_points={
+        'console_scripts': [
+            'setenv=py_setenv:main',
+        ],
+    },
 )
+
