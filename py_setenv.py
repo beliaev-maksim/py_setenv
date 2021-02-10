@@ -14,7 +14,9 @@ user_hkey = (winreg.HKEY_CURRENT_USER, r"Environment")
               help="Specifies if configure user environment")
 @click.option("-a", "--append", is_flag=True, required=False,
               help="Appends to/Creates environment variable")
-def main(name, value, user, append):
+@click.option("-d", "--delete", is_flag=True, required=False,
+              help="Deletes environment variable")
+def main(name, value, user, append, delete):
     """
     Utility to set/get/modify windows environment variables via registry
 
@@ -41,13 +43,15 @@ def main(name, value, user, append):
 
     elif value is not None:
         result = set_variable(name, value, user)
+    elif delete:
+        result = delete_variable(name, user)
     else:
         result = get_variable(name, user)
 
     click.echo(result)
 
 
-def set_variable(name, value, user=True):
+def set_variable(name, value, user):
     """
     Creates/replaces environment variable
     """
@@ -60,7 +64,7 @@ def set_variable(name, value, user=True):
         return False
 
 
-def append_variable(name, value, user=True):
+def append_variable(name, value, user):
     """
     Creates/appends environment variable
     """
@@ -69,7 +73,7 @@ def append_variable(name, value, user=True):
     return result
 
 
-def get_variable(name, user=True):
+def get_variable(name, user):
     """
     Gets the value of environment variable
     """
@@ -80,3 +84,14 @@ def get_variable(name, user=True):
         return value
     except WindowsError:
         return None
+
+def delete_variable(name, user):
+    """
+    Deletes environment variable
+    """
+    hkey = user_hkey if user else system_hkey
+    try:
+        with winreg.OpenKey(*hkey, access=winreg.KEY_ALL_ACCESS) as key:
+            return winreg.DeleteValue(key, name)
+    except WindowsError:
+        return False
