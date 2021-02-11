@@ -20,7 +20,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'setenv=py_setenv:main',
+            'setenv=py_setenv:click_command',
         ],
     },
 )

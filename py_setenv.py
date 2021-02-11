@@ -16,9 +16,9 @@ user_hkey = (winreg.HKEY_CURRENT_USER, r"Environment")
               help="Appends to/Creates environment variable")
 @click.option("-d", "--delete", is_flag=True, required=False,
               help="Deletes environment variable")
-def main(name, value, user, append, delete):
+def click_command(name, value, user, append, delete):
     """
-    Utility to set/get/modify windows environment variables via registry
+    Utility to set/get/modify/delete windows environment variables via registry
 
     Usage:
 
@@ -30,12 +30,15 @@ def main(name, value, user, append, delete):
 
         to append to existing value: provide variable name, value and -a flag
     """
+    setenv(name, value, user, append, delete)
+
+def setenv(name, value=None, user=False, append=False, delete=False):
     if not name:
         click.echo("No variable name is provided", err=True)
         return
 
     if value:
-        value = value.strip()
+        value = str(value).strip()
 
     if append:
         if value is not None:
@@ -87,7 +90,7 @@ def get_variable(name, user):
             value, regtype = winreg.QueryValueEx(key, name)
         return value
     except WindowsError:
-        return None
+        return "Variable {} does not exist".format(name)
 
 def delete_variable(name, user):
     """
