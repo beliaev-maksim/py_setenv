@@ -12,7 +12,7 @@ def get_requirements(filename):
 project_requirements = get_requirements("requirements.txt")
 
 setup(
-    name="setenv",
+    name="py_setenv",
     version='1',
     license='MIT',
     description='CLI App to manage window environment variables',
