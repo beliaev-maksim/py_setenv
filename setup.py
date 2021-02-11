@@ -1,4 +1,9 @@
 from setuptools import setup
+from os import path
+
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 def get_requirements(filename):
     requirements = []
@@ -13,9 +18,13 @@ project_requirements = get_requirements("requirements.txt")
 
 setup(
     name="py_setenv",
-    version='1',
+    version='1.0',
     license='MIT',
+
     description='CLI App to manage window environment variables',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+
     author='Maksim Beliaev',
     author_email='beliaev.m.s@gmail.com',
 
