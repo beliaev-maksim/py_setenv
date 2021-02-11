@@ -34,6 +34,9 @@ def main(name, value, user, append, delete):
         click.echo("No variable name is provided", err=True)
         return
 
+    if value:
+        value = value.strip()
+
     if append:
         if value is not None:
             result = append_variable(name, value, user)
@@ -49,6 +52,7 @@ def main(name, value, user, append, delete):
         result = get_variable(name, user)
 
     click.echo(result)
+    return result
 
 
 def set_variable(name, value, user):
@@ -92,6 +96,7 @@ def delete_variable(name, user):
     hkey = user_hkey if user else system_hkey
     try:
         with winreg.OpenKey(*hkey, access=winreg.KEY_ALL_ACCESS) as key:
-            return winreg.DeleteValue(key, name)
+            winreg.DeleteValue(key, name)
+            return True
     except WindowsError:
         return False
