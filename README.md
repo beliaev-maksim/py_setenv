@@ -18,7 +18,7 @@ Command Line Application and Python Package to Add/Append/Remove environment var
 ## Installation
 To install the package you need to run
 ```
-python -m pip install 
+python -m pip install py-setenv
 ```
 
 ## How to use as CLI application
