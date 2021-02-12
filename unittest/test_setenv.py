@@ -25,11 +25,15 @@ class TestSetEnv(unittest.TestCase):
         # check that variable does not exist before start
         user_list = ["--user"] if user else []
         result = self.runner.invoke(click_command, ["unittest"] + user_list)
-        self.assertEqual("Variable unittest does not exist", result.output.strip())
+        self.assertEqual("Environment Variable 'unittest' does not exist", result.output.strip())
 
         # check that set returns True
         result = self.runner.invoke(click_command, ["unittest", "-v", "test_str"] + user_list)
         self.assertTrue(bool(result.output.strip()))
+
+        # check that 'unittest' is in dictionary
+        result = self.runner.invoke(click_command, ["--list-all"] + user_list)
+        self.assertIn("unittest=test_str", result.output.strip())
 
         # test that new value was added
         result = self.runner.invoke(click_command, ["unittest"] + user_list)
@@ -48,4 +52,4 @@ class TestSetEnv(unittest.TestCase):
 
         # check that deleted
         result = self.runner.invoke(click_command, ["unittest"] + user_list)
-        self.assertEqual("Variable unittest does not exist", result.output.strip())
+        self.assertEqual("Environment Variable 'unittest' does not exist", result.output.strip())
