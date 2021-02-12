@@ -1,5 +1,6 @@
 ## About 
-Command Line Application and Python Package to Add/Append/Remove environment variables on Windows systems
+Command Line Application and Python Package to Add/Append/Remove environment variables on Windows systems  
+Current package allows to precisely control and differentiate user and system variables 
 
 ## Table of Contents
 1. [Installation](#installation)
@@ -8,11 +9,13 @@ Command Line Application and Python Package to Add/Append/Remove environment var
     2. [Create/Replace variable](#createreplace-variable-cli)
     3. [Append to existing variable](#append-to-existing-variable-cli)
     4. [Delete variable](#delete-variable-cli)
+    5. [List all variables](#list-all-variables-cli)
 3. [Python Package](#how-to-use-as-python-package)
     1. [Get variable](#get-variable)
     2. [Create/Replace variable](#createreplace-variable)
     3. [Append to existing variable](#append-to-existing-variable)
     4. [Delete variable](#delete-variable)
+    4. [List all variables](#list-all-variables)
 
 
 ## Installation
@@ -61,6 +64,16 @@ setenv my_var -d -u
 setenv my_var -d
 ```
 
+### List all variables (CLI)
+Lists all variables
+```batch
+:: User environment
+setenv -l
+
+:: System environment
+setenv -l
+```
+
 ## How to use as Python package
 ### Get variable
 Get value of variable _my_var_ 
@@ -88,4 +101,14 @@ Delete variable _my_var_
 ```python
 from py_setenv import setenv
 setenv("my_var", delete=True, user=True)
+```
+
+### List all variables
+Lists all variables
+```python
+from py_setenv import setenv
+setenv(list_all=True)
+
+# to suppress echo to console
+setenv(list_all=True, suppress_echo=True)
 ```

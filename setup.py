@@ -7,7 +7,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="py_setenv",
-    version='1.0.7',
+    version='1.1.0',
     license='MIT',
 
     description='CLI App to manage window environment variables',

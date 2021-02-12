@@ -31,6 +31,10 @@ class TestSetEnv(unittest.TestCase):
         result = self.runner.invoke(click_command, ["unittest", "-v", "test_str"] + user_list)
         self.assertTrue(bool(result.output.strip()))
 
+        # check that 'unittest' is in dictionary
+        result = self.runner.invoke(click_command, ["--list-all"] + user_list)
+        self.assertIn("unittest=test_str", result.output.strip())
+
         # test that new value was added
         result = self.runner.invoke(click_command, ["unittest"] + user_list)
         self.assertEqual("test_str", result.output.strip())
