@@ -75,7 +75,12 @@ def append_variable(name, value, user):
     """
     Creates/appends environment variable
     """
-    new_val = get_variable(name=name, user=user) + ";" + value
+    new_val = get_variable(name=name, user=user)
+    if new_val:
+        new_val += ";" + value
+    else:
+        new_val = value
+
     result = set_variable(name=name, value=new_val, user=user)
     return result
 
@@ -90,7 +95,8 @@ def get_variable(name, user):
             value, regtype = winreg.QueryValueEx(key, name)
         return value
     except WindowsError:
-        return "Variable {} does not exist".format(name)
+        click.echo("Environment Variable '{}' does not exist".format(name))
+        return ""
 
 def delete_variable(name, user):
     """

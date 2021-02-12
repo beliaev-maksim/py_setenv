@@ -7,7 +7,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="py_setenv",
-    version='1.0.5',
+    version='1.0.7',
     license='MIT',
 
     description='CLI App to manage window environment variables',
@@ -20,6 +20,7 @@ setup(
     install_requires=[
         "click>=7.0"
     ],
+    py_modules=["py_setenv"],
     entry_points={
         'console_scripts': [
             'setenv=py_setenv:click_command',
