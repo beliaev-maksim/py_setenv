@@ -5,20 +5,9 @@ this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-def get_requirements(filename):
-    requirements = []
-    with open(filename, "rt") as req_file:
-        for line in req_file.read().splitlines():
-            if not line.strip().startswith("#"):
-                requirements.append(line)
-    return requirements
-
-
-project_requirements = get_requirements("requirements.txt")
-
 setup(
     name="py_setenv",
-    version='1.0.1',
+    version='1.0.5',
     license='MIT',
 
     description='CLI App to manage window environment variables',
@@ -28,7 +17,9 @@ setup(
     author='Maksim Beliaev',
     author_email='beliaev.m.s@gmail.com',
 
-    install_requires=project_requirements,
+    install_requires=[
+        "click>=7.0"
+    ],
     entry_points={
         'console_scripts': [
             'setenv=py_setenv:click_command',
