@@ -63,7 +63,7 @@ def setenv(name="", value=None, user=False, append=False, delete=False, list_all
     elif delete:
         result = delete_variable(name, user)
     else:
-        result = get_variable(name, user)
+        result = get_variable(name, user, suppress_echo)
 
     if not suppress_echo:
         click.echo(result)
@@ -97,7 +97,7 @@ def append_variable(name, value, user):
     return result
 
 
-def get_variable(name, user):
+def get_variable(name, user, suppress_echo):
     """
     Gets the value of environment variable
     """
@@ -107,8 +107,9 @@ def get_variable(name, user):
             value, regtype = winreg.QueryValueEx(key, name)
         return value
     except WindowsError:
-        click.echo("Environment Variable '{}' does not exist".format(name))
-        return ""
+        if not suppress_echo:
+            click.echo("Environment Variable '{}' does not exist".format(name))
+        raise KeyError
 
 def delete_variable(name, user):
     """
