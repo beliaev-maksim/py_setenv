@@ -29,4 +29,6 @@ jobs:
         python -m pip install -r requirements.txt
     - name: Unittests
       run: |
-        python -m unittest unittest
+        pushd tests
+        python -m unittest
+        popd
