@@ -41,7 +41,7 @@ class TestSetEnv(unittest.TestCase):
 
         # test that new text was appended
         result = self.runner.invoke(click_command, ["unittest", "-v", "appended_str", "-a"] + user_list)
-        self.assertTrue(bool(result.output.strip()))
+        self.assertRaises(KeyError, result.output)
 
         result = self.runner.invoke(click_command, ["unittest"] + user_list)
         self.assertEqual("test_str;appended_str", result.output.strip())
