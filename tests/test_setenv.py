@@ -24,6 +24,7 @@ class TestSetEnv(unittest.TestCase):
     def run_checks(self, user):
         # check that variable does not exist before start
         user_list = ["--user"] if user else []
+        
         result = self.runner.invoke(click_command, ["unittest"] + user_list)
         self.assertEqual("Environment Variable 'unittest' does not exist", result.output.strip())
 
@@ -43,6 +44,7 @@ class TestSetEnv(unittest.TestCase):
         result = self.runner.invoke(click_command, ["unittest", "-v", "appended_str", "-a"] + user_list)
         self.assertRaises(KeyError, result)
 
+        #
         result = self.runner.invoke(click_command, ["unittest"] + user_list)
         self.assertEqual("test_str;appended_str", result.output.strip())
 
