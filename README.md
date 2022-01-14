@@ -75,12 +75,17 @@ setenv -l
 ```
 
 ## How to use as Python package
+
 ### Get variable
-Get value of variable _my_var_ 
+
+Get value of variable _my_var_
+
 ```python
 from py_setenv import setenv
 setenv("my_var")
 ```
+
+Note Throws error KeyError when Enviroment variable is not found
 
 ### Create/replace variable
 Set variable _my_var_ to _1_  

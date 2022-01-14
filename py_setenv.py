@@ -8,16 +8,11 @@ user_hkey = (winreg.HKEY_CURRENT_USER, r"Environment")
 
 @click.command()
 @click.argument("name", required=False)
-@click.option("-v", "--value", required=False, default=None,
-              help="Variable value")
-@click.option("-u", "--user", is_flag=True, required=False,
-              help="Specifies if configure user environment")
-@click.option("-a", "--append", is_flag=True, required=False,
-              help="Appends to/Creates environment variable")
-@click.option("-d", "--delete", is_flag=True, required=False,
-              help="Deletes environment variable")
-@click.option("-l", "--list-all", is_flag=True, required=False,
-              help="Lists all environment variables")
+@click.option("-v", "--value", required=False, default=None, help="Variable value")
+@click.option("-u", "--user", is_flag=True, required=False, help="Specifies if configure user environment")
+@click.option("-a", "--append", is_flag=True, required=False, help="Appends to/Creates environment variable")
+@click.option("-d", "--delete", is_flag=True, required=False, help="Deletes environment variable")
+@click.option("-l", "--list-all", is_flag=True, required=False, help="Lists all environment variables")
 def click_command(name, value, user, append, delete, list_all):
     """
     Utility to set/get/modify/delete windows environment variables via registry
@@ -33,6 +28,7 @@ def click_command(name, value, user, append, delete, list_all):
         to append to existing value: provide variable name, value and -a flag
     """
     setenv(name, value, user, append, delete, list_all)
+
 
 def setenv(name="", value=None, user=False, append=False, delete=False, list_all=False, suppress_echo=False):
     if list_all:
@@ -52,7 +48,7 @@ def setenv(name="", value=None, user=False, append=False, delete=False, list_all
 
     if append:
         if value is not None:
-            result = append_variable(name, value, user)
+            result = append_variable(name, value, user, suppress_echo)
         else:
             if not suppress_echo:
                 click.echo("No value is provided in append mode", err=True)
@@ -63,7 +59,7 @@ def setenv(name="", value=None, user=False, append=False, delete=False, list_all
     elif delete:
         result = delete_variable(name, user)
     else:
-        result = get_variable(name, user)
+        result = get_variable(name, user, suppress_echo)
 
     if not suppress_echo:
         click.echo(result)
@@ -83,11 +79,11 @@ def set_variable(name, value, user):
         return False
 
 
-def append_variable(name, value, user):
+def append_variable(name, value, user, suppress_echo):
     """
     Creates/appends environment variable
     """
-    new_val = get_variable(name=name, user=user)
+    new_val = get_variable(name, user, suppress_echo)
     if new_val:
         new_val += ";" + value
     else:
@@ -97,7 +93,7 @@ def append_variable(name, value, user):
     return result
 
 
-def get_variable(name, user):
+def get_variable(name, user, suppress_echo):
     """
     Gets the value of environment variable
     """
@@ -107,8 +103,10 @@ def get_variable(name, user):
             value, regtype = winreg.QueryValueEx(key, name)
         return value
     except WindowsError:
-        click.echo("Environment Variable '{}' does not exist".format(name))
-        return ""
+        if not suppress_echo:
+            click.echo("Environment Variable '{}' does not exist".format(name))
+        raise KeyError
+
 
 def delete_variable(name, user):
     """
@@ -121,6 +119,7 @@ def delete_variable(name, user):
             return True
     except WindowsError:
         return False
+
 
 def list_all_variables(user):
     hkey = user_hkey if user else system_hkey
